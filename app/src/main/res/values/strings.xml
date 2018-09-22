@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Digidata</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="login_emp_id">Employee ID</string>
+    <string name="login_pass">Password</string>
+    <string name="login_button">Log In</string>
+
+    <string name="network_dialog_title">Network Required</string>
+    <string name="network_dialog_message">For this app to work we need an active network connected.
+    Please turn on network or click below buttons to take you to network settings</string>
+    <string name="network_dialog_cellular">Mobile Data</string>
+    <string name="network_dialog_wifi">WIFI</string>
+    <string name="network_dialog_close">Close</string>
+
+    <string name="title_activity_logged_in">Welcome</string>
+    <string name="text_after_login">Welcome Mr. Abhishek !</string>
+    <string name="process_selection">Select The Process:</string>
+    <string name="moulding">Moulding</string>
+    <string name="metallizing">Metallizing</string>
+    <string name="hard_coat">Hard Coat</string>
+    <string name="base_coat">Base Coat</string>
+    <string name="antifog">Antifog</string>
+    <string name="assembly">Assembly</string>
+    <string name="mouldingMachines_selection">Select Machine:</string>
+    <string name="shift_label">Activities for Shift: </string>
+</resources>
