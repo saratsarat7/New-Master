@@ -10,3 +10,5 @@
 .externalNativeBuild
 
 README\.md
+
+\.idea/
