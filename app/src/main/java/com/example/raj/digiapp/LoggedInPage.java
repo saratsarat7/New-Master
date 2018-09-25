@@ -1,8 +1,10 @@
 package com.example.raj.digiapp;
 
 import android.content.Intent;
+import android.graphics.Point;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
@@ -17,11 +19,6 @@ public class LoggedInPage extends AppCompatActivity {
     //Shared Preferences Class
     private Preferences pref;
 
-    private static TextView mouldingOption, metallizingOption, hardCoatOption, baseCoatOption, antifogOption, assembleyOption;
-    String optionSelected;
-    private static TextView employeeName;
-
-    private static ListView processList;
     private static String[] process_names_list={"Moulding","Metallizing","HardCoat","BaseCoat","Antifog","Assembly"};
 
     @Override
@@ -30,24 +27,22 @@ public class LoggedInPage extends AppCompatActivity {
         pref = new Preferences(getApplicationContext());
 
         setContentView(R.layout.activity_logged_in_page);
-        showMachineListPage();
-    }
 
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        float width = size.x;
+        width = (width%2);
 
-    /**
-     * Below we are using Custom Adapter to show the list of all the process in ListView.
-     * It also sets the extra text for any process selected. This extra text is then verifies by another class
-     * and it sets the list of machine names according to the process selected.
-     */
+        pref.inPref("gridWidth", Float.toString(width));
 
-    public void showMachineListPage() {
+        TextView eNametv = findViewById(R.id.eName);
+        TextView processHeader = findViewById(R.id.listHeader);
+        final ListView processList = findViewById(R.id.processList);
 
-        //Setting the name of the logged in employee
-        employeeName=(TextView)findViewById(R.id.employeeName);
-        //String empName="Welcome Mr. "+getIntent().getExtras().getString("name");
-        String empName="Welcome Mr. "+pref.outPref("empName");
-        employeeName.setText(empName);
-        processList = (ListView) findViewById(R.id.process_listView);
+        String ename = pref.outPref("eName");
+        eNametv.setText(ename);
+
         ListAdapter adapter = new CustomAdapter(this, process_names_list, R.drawable.process);
         processList.setAdapter(adapter);
 
@@ -80,6 +75,20 @@ public class LoggedInPage extends AppCompatActivity {
 
             }
         });
+
+        showMachineListPage();
+    }
+
+
+    /**
+     * Below we are using Custom Adapter to show the list of all the process in ListView.
+     * It also sets the extra text for any process selected. This extra text is then verifies by another class
+     * and it sets the list of machine names according to the process selected.
+     */
+
+    public void showMachineListPage() {
+
+
     }
 
 }

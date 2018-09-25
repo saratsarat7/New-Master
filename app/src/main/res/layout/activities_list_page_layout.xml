@@ -1,59 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_margin="2dp"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimary">
 
-    <LinearLayout
-        android:layout_width="235dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/activity_category"
-            android:layout_width="wrap_content"
+        <android.support.v7.widget.GridLayout
+            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:padding="4dp"
-            android:text="TextView"
-            android:textColor="?attr/colorButtonNormal" />
+            app:columnCount="2"
+            app:rowCount="2">
 
-        <CheckBox
-            android:id="@+id/activity_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:padding="4dp"
-            android:text="CheckBox"
-            android:textColor="?attr/colorButtonNormal" />
+            <TextView
+                android:id="@+id/activity_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_gravity="center"
+                app:layout_rowWeight="1"
+                android:text="TextView"
+                android:textColor="?attr/colorButtonNormal" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/activity_program"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_gravity="center"
+                app:layout_rowWeight="1"
+                android:text="TextView"
+                android:textColor="?attr/colorButtonNormal" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="5dp"
-        android:orientation="vertical">
+            <CheckBox
+                android:id="@+id/activity_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_gravity="center"
+                app:layout_rowWeight="1"
+                android:text="CheckBox"
+                android:textColor="?attr/colorButtonNormal" />
 
-        <TextView
-            android:id="@+id/activity_program"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:padding="4dp"
-            android:text="TextView"
-            android:textColor="?attr/colorButtonNormal" />
+            <TextView
+                android:id="@+id/instruction_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:linksClickable="true"
+                app:layout_gravity="center"
+                app:layout_rowWeight="1"
+                android:text="View Instruction"
+                android:textColor="?attr/colorButtonNormal" />
 
-        <TextView
-            android:id="@+id/instruction_link"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="false"
-            android:linksClickable="true"
-            android:padding="4dp"
-            android:text="View Instruction"
-            android:textColor="?attr/colorButtonNormal" />
-    </LinearLayout>
-</LinearLayout>
+        </android.support.v7.widget.GridLayout>
+
+</RelativeLayout>
