@@ -28,13 +28,15 @@ public class DigiAppLogin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        pref = new Preferences(getApplicationContext());
+
         //Check if there is internet connection or not.
         isNetworkConnected(this);
 
         if(!(pref.outPref("login_stat") == "OK")) {
             setContentView(R.layout.content_digi_app_login);
         } else {
-            gotoHome(this);
+            gotoHome();
         }
     }
 
@@ -47,7 +49,7 @@ public class DigiAppLogin extends AppCompatActivity {
         if(!(pref.outPref("login_stat") == "OK")) {
             setContentView(R.layout.content_digi_app_login);
         } else {
-            gotoHome(this);
+            gotoHome();
         }
     }
 
@@ -81,22 +83,24 @@ public class DigiAppLogin extends AppCompatActivity {
      */
     public void buildNetworkDialog(Context context) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.network_dialog_title);
         builder.setMessage(R.string.network_dialog_message);
 
-        builder.setNeutralButton(R.string.network_dialog_cellular, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.network_dialog_cellular, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent i = new Intent(Settings.ACTION_DATA_ROAMING_SETTINGS);
+                dialog.dismiss();
                 startActivity(i);
             }
         });
 
-        builder.setNeutralButton(R.string.network_dialog_wifi, new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.network_dialog_wifi, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent i = new Intent(Settings.ACTION_WIFI_SETTINGS);
+                dialog.dismiss();
                 startActivity(i);
             }
         });
@@ -104,9 +108,11 @@ public class DigiAppLogin extends AppCompatActivity {
         builder.setNeutralButton(R.string.network_dialog_close, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
                 finish();
             }
         });
+        builder.show();
     }
 
     public void verifyLoginCredentials(View view){
@@ -152,19 +158,28 @@ public class DigiAppLogin extends AppCompatActivity {
          */
         String type="login";
 
-        dbConnection.execute(type);
+        try {
+            Map<String, String> result = dbConnection.execute(type).get();
+            if(result.get("status").equals("1")) {
+                progress.dismiss();
+                String empName = result.get("empName");
+                pref.inPref("empName", empName);
+                gotoHome();
+            } else {
+                progress.dismiss();
+                progress.setMessage("Invalid Credentials");
+                progress.show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 
-    /**
-     * The below method calls the LoggedIn page and starts the activity but only after verifying the values from DB.
-     *
-     * @param ctx
-     */
-    //public void gotoHome(Context ctx, Map<String,String >result){
-    public void gotoHome(Context ctx){
-        Intent intent=new Intent(ctx,LoggedInPage.class);
-        ctx.startActivity(intent);
+    public void gotoHome(){
+        Intent intent=new Intent(getApplicationContext(),LoggedInPage.class);
+        getApplication().startActivity(intent);
         /*if(result.get("empId").equals("123456")) {
             intent.putExtra("name",result.get("empName"));
 

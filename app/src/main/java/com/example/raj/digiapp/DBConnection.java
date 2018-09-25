@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,6 +32,7 @@ public class DBConnection extends AsyncTask<String, Void, Map<String,String>> {
 
     //Set context to Application Context
     public DBConnection(Context context) {
+        this.pref = new Preferences(context);
         this.context = context.getApplicationContext();
     }
 
@@ -53,7 +57,9 @@ public class DBConnection extends AsyncTask<String, Void, Map<String,String>> {
 
     @Override
     protected void onPostExecute(Map<String,String> result) {
-        context.startActivity(new Intent(context, DigiAppLogin.class));
+        return;
+        // Nothing to do here.
+        // new DigiAppLogin().gotoHome(context,result);
     }
 
     /* Not sure if we need it now.
@@ -71,7 +77,7 @@ public class DBConnection extends AsyncTask<String, Void, Map<String,String>> {
 
         //Create Query URL.
         String parameters = "empID=" + empID + "&pwd=" + pwd;
-        String baseUrl = "http://digiappcom.000webhostapp.com/login.php?";
+        String baseUrl = "http://digiappcom.000webhostapp.com/test.php?";
         String finalURL = baseUrl + parameters;
 
         //Hit DB to get validation.
@@ -88,12 +94,9 @@ public class DBConnection extends AsyncTask<String, Void, Map<String,String>> {
                 while ((line = bufferedReader.readLine()) != null) {
                     lineString += line;
                 }
-                String[] response=lineString.split("&");
-                if(response[0].equals("connection ok")){
-                    pref.inPref("login_stat", "OK");
-                    result.put("empId",response[1]);
-                    result.put("empName",response[2]);
-                }
+                JSONObject js=jsonParser(lineString);
+                result.put("status",js.getString("loginStatus"));
+                result.put("empName",js.getString("firstName")+" "+js.getString("lastName"));
             }
         } catch (ProtocolException e) {
             e.printStackTrace();
@@ -101,7 +104,19 @@ public class DBConnection extends AsyncTask<String, Void, Map<String,String>> {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
+    private JSONObject jsonParser(String jsonResponse) throws JSONException {
+        JSONObject jsonObject=null;
+        try {
+            jsonObject = new JSONObject(jsonResponse);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        };
+        return jsonObject;
+    }
 }

@@ -13,6 +13,10 @@ import android.widget.Toast;
 import org.w3c.dom.Text;
 
 public class LoggedInPage extends AppCompatActivity {
+
+    //Shared Preferences Class
+    private Preferences pref;
+
     private static TextView mouldingOption, metallizingOption, hardCoatOption, baseCoatOption, antifogOption, assembleyOption;
     String optionSelected;
     private static TextView employeeName;
@@ -23,6 +27,8 @@ public class LoggedInPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        pref = new Preferences(getApplicationContext());
+
         setContentView(R.layout.activity_logged_in_page);
         showMachineListPage();
     }
@@ -38,7 +44,8 @@ public class LoggedInPage extends AppCompatActivity {
 
         //Setting the name of the logged in employee
         employeeName=(TextView)findViewById(R.id.employeeName);
-        String empName="Welcome Mr. "+getIntent().getExtras().getString("name");
+        //String empName="Welcome Mr. "+getIntent().getExtras().getString("name");
+        String empName="Welcome Mr. "+pref.outPref("empName");
         employeeName.setText(empName);
         processList = (ListView) findViewById(R.id.process_listView);
         ListAdapter adapter = new CustomAdapter(this, process_names_list, R.drawable.process);
